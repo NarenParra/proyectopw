@@ -547,7 +547,7 @@ export default {
       //
     };
   },
-
+  // de Vuelidate
   validations() {
     //para  el tipo de pago "En totalidad al momento de firmar el contrato"
     if (this.validar == 1) {
@@ -868,15 +868,17 @@ export default {
     }
   },
   methods: {
+    //eliminar articulos del array
     deleteRow(index) {
       this.articulo.splice(index, 1);
     },
+    //submit del modal registrar usuario
     onSubmit(evt) {
       evt.preventDefault();
       console.log(evt.preventDefault());
       this.guardarUsuario(this.user.doc, this.user.nomb, this.user.tipo);
     },
-
+    //Alertes
     makeToast(variant = null, msg) {
       this.$bvToast.toast(msg, {
         title: `Alerta`,
@@ -884,6 +886,7 @@ export default {
         solid: true
       });
     },
+    //cuando completa el fomulario (boton finalizar ultimo step)
     onComplete: function() {
       if (this.articulo.length > 0) {
         this.finalidad = "Compraventa";
@@ -1196,7 +1199,13 @@ export default {
           console.log(response);
           if (response.data.success) {
             this.makeToast("primary", response.data.massage);
-            this.reload();
+            
+            if(this.tipoContrato=="borrador"){
+              window.location.href = '/contratos/borrador'; 
+            }else 
+            if(this.tipoContrato=="iniciado"){
+              window.location.href = '/contratos/iniciado'; 
+            }
           } else {
             this.makeToast("danger", response.data.massage);
           }
@@ -1294,7 +1303,7 @@ export default {
           if (response.data.success) {
             this.makeToast("primary", response.data.massage);
             //this.reload();
-            window.location.href = '/'; 
+            window.location.href = '/contratos/borrador'; 
           } else {
             this.makeToast("danger", response.data.massage);
           }
