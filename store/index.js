@@ -1,21 +1,24 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
-
+import { notDeepStrictEqual } from "assert";
 
 export const state = () => ({
-  counter: [], 
-  mostrar:true
-})
+  counter: [],
+  mostrar: true,
+  nav: true
+});
 
 export const mutations = {
-  increment (state, date) {
-    state.counter=date
+  increment(state, date) {
+    state.counter = date;
   },
-  cambio (state, estado) {
-    state.mostrar=estado
+  cambio(state, estado) {
+    state.mostrar = estado;
+  },
+  nav(state, estado) {
+    state.nav = estado;
   }
-}
+};
 
 /*
 export default function() {

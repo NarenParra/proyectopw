@@ -1,29 +1,28 @@
 <template>
   <div>
-    <div>
-      <b-navbar  type="dark" variant="info">
-        <b-nav-brand variant="info" class="mt-2" style="font-size:180%; color:#ffffff" href="/"><p style="margin-left:10px; font-size:40px">WinTime</p></b-nav-brand>
-        <b-navbar-nav v-if="vendedor">
-          <!-- Navbar dropdowns -->
-          <b-nav-item-dropdown text="Contratos de clientes" >
-            <b-dropdown-item href="/contratos/base">Crear contrato</b-dropdown-item>
-            <b-dropdown-item href="/contratos/borrador">Contratos Borrador</b-dropdown-item>
-            <b-dropdown-item href="/contratos/iniciado">Contratos Iniciados</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item href="/contratos/seguimiento">Seguimiento</b-nav-item>
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>
-              <em>User</em>
-            </template>
-            <b-dropdown-item @click="ver_cliente">Vendedor</b-dropdown-item>
-            <b-dropdown-item @click="ver_cliente">Comprador</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-        
-        {{vendedor}}
-      </b-navbar>
-    </div>
+    <b-navbar type="dark" variant="info">
+      <b-navbar-brand style="font-size:40px" href="/">WinTime</b-navbar-brand>
+      <b-navbar-nav v-if="$store.state.nav">
+        <!-- Navbar dropdowns -->
+        <b-nav-item-dropdown text="Contratos de clientes">
+          <b-dropdown-item href="/contratos/base">Crear contrato</b-dropdown-item>
+          <b-dropdown-item href="/contratos/borrador">Contratos Borrador</b-dropdown-item>
+          <b-dropdown-item href="/contratos/iniciado">Contratos Iniciados</b-dropdown-item>
+        </b-nav-item-dropdown>
+        <b-nav-item href="/contratos/seguimiento">Seguimiento</b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content>
+            <em>User</em>
+          </template>
+          <b-dropdown-item @click="$store.commit('nav',true)">Vendedor</b-dropdown-item>
+          <b-dropdown-item @click="$store.commit('nav',false)">Comprador</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+      {{$store.state.nav}}
+    </b-navbar>
   </div>
 </template>
 
@@ -31,7 +30,7 @@
 export default {
   data() {
     return {
-      vendedor: true
+      
     };
   },
   methods: {

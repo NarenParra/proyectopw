@@ -57,7 +57,7 @@ export class APIService {
     }).then(response => response.data);
   }
   getUsuario(idu) {
-    const url = `${API_URL}/api/user/`;
+    const url = `${API_URL}/api/usuario/user/`;
     return axios.get(url, {
       params: {
         idc: idu
