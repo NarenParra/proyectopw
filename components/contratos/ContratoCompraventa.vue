@@ -2,9 +2,9 @@
     <div>
       <b-card>
          <b-button variant="outline-success" class="float-left" @click="$store.commit('cambio',true)" >《 Volver</b-button>
-        <!-- <b-button variant="outline-primary" class="float-right" @click="$store.commit('cambio',true)" >Guardar Borrador</b-button> -->
+        <!-- <b-button v-if="$store.state.counter.estado == 'Base'" variant="outline-success" class="float-right" @click="onComplete" >Guardar Borrador</b-button> -->
+        <b-button v-if="$store.state.counter.estado == 'Borrador'" variant="outline-danger" class="float-right" @click="$refs['eliminar-borrador'].show()" >Eliminar Borrador</b-button>
       </b-card>
-
       <br>
       <b-card>
         <form-wizard
@@ -143,7 +143,7 @@
                 </client-only>
               </tab-content >
               <tab-content  title="Vista completa">
-                 <client-only>
+                <client-only>
                 <div class="text-justify" id="imprimir">
                   <h1 class="text-center">Contrato de Compraventa</h1>
                   <br>
@@ -196,31 +196,28 @@
                     <b>QUINTA.</b> ACEPTACIÓN:  En constancia de aceptación se suscribe, una vez leído, en dos copias del mismo tenor y contenido con destino a cada una de las partes, en la ciudad de <b>{{contratoCiudad}}</b>, hoy (<b>{{moment(fechaContrato).format("YYYY-MM-DD")}}</b>).
                   </p>
                   
-                  
                   <br>
                   <br>
 
                    <b-row>
-                     <b-col cols="8">
-                       <p>firma del Vendedor</P>                   
-                       <p>______________</p>                       
-                       <p>cc.</p>  
-                     </b-col>
+                    <b-col cols="8">
+                      <p>firma del Vendedor</P>                   
+                      <p>______________</p>                       
+                      <p>cc.</p>  
+                    </b-col>
 
-                     <b-col>
-                       <p>firma del Comprador</p>
-                       <p>______________</p>
-                       <p>cc.</p>
-                     </b-col>
-                   </b-row>
-                                        
+                    <b-col>
+                      <p>firma del Comprador</p>
+                      <p>______________</p>
+                      <p>cc.</p>
+                    </b-col>
+                   </b-row>                    
                 </div>
                 <br>
                 <br> 
-          
-                </client-only>
-                
-              </tab-content >
+              </client-only>                
+            </tab-content >
+<!-- Bloque de alertas -->
             <div v-if="mostrar">
               <b-card
                 border-variant="danger"
@@ -263,12 +260,12 @@
                   <a  href="#" @click="$refs.wizard.activateTab(3)">revisar seccion >></a></p>
                 </div>
               </b-card-text>
-              </b-card>
+            </b-card>
           </div>
-          </form-wizard>   
+        </form-wizard>   
       </b-card>
-      
    <div>
+     <!-- Guardar como contrato borrador  -->
     <b-modal ref="my-modal"  hide-footer title="Guardar Borrador">
       <div class="d-block text-center">
         <h3>Hay Errores en el fomulario, eche un vistazo a los Errores!</h3>
@@ -277,7 +274,7 @@
       <b-button class="mt-2" variant="outline-success" block @click="gurardarContrato">Guardar como Borrador y Salir</b-button>
     </b-modal>
   </div>
-
+<!-- Actualizar borrador -->
   <div>
     <b-modal ref="my-modal-borrador"  hide-footer title="Actualizar Borrador">
       <div class="d-block text-center">
@@ -287,7 +284,7 @@
       <b-button class="mt-2" variant="outline-success" block @click="updateContrato">Actualizar Borrador y Salir</b-button>
     </b-modal>
   </div>
-
+<!-- Por si se quiere modificar contrato iniciado -->
   <div>
     <b-modal ref="no-edit"  hide-footer title="">
       <div class="d-block text-center">
@@ -297,7 +294,7 @@
       <b-button class="mt-2" variant="outline-success" block @click="reload()">Salir</b-button>
     </b-modal>
   </div>
-  
+  <!-- Registrar contrato iniciado -->
   <div>
     <b-modal ref="allfine"  hide-footer title="Registrar Contrato">
       <div class="d-block text-center">
@@ -307,7 +304,7 @@
       <b-button class="mt-2" variant="outline-success" block @click="gurardarContrato">Registrar</b-button>
     </b-modal>
   </div>
-
+<!-- Guardar borrador como iniciado -->
   <div>
     <b-modal ref="allfine-borrador"  hide-footer title="Registrar Contrato">
       <div class="d-block text-center">
@@ -317,10 +314,19 @@
       <b-button class="mt-2" variant="outline-success" block @click="updateContrato">Registrar</b-button>
     </b-modal>
   </div>
-  
+<!-- Eliminar contrato borrador -->
+  <div>
+    <b-modal ref="eliminar-borrador"  hide-footer title="Registrar Contrato">
+      <div class="d-block text-center">
+        <h3> Está seguro de que desea Eliminar este contrato ?</h3>
+      </div>
+      <b-button class="mt-3" variant="outline-warning" block @click="$refs['eliminar-borrador'].hide()">Cancelar</b-button>
+      <b-button class="mt-2" variant="outline-success" block @click="eliminarBorrador">Eliminar</b-button>
+    </b-modal>
+  </div>
+  <!-- Registrar usuario  -->
   <div v-if="this.$store.state.counter.estado== 'Borrador' || this.$store.state.counter.estado== 'Base' " >
     <b-modal ref="usuario"  hide-footer title="Registro de Persona">
-      
       <div>
         <h3 class="text-center"> La persona no existe. </h3>
         <h3 class="text-center">Desea Registrarla?</h3>
@@ -377,14 +383,10 @@
             placeholder="Ingrese la direccion"
           ></b-form-input>
         </b-form-group>
-
-
         <b-button class="mt-3" variant="outline-danger" block  @click="$refs['usuario'].hide()">Cancelar</b-button>
         <b-button class="mt-2" variant="outline-success" block type="submit">Guardar</b-button>
-  
       </b-form>    
       </div>
-      
     </b-modal>
     
   </div>
@@ -651,7 +653,7 @@ export default {
         //sec4: ["tradicion"],
         sec5: ["contratoCiudad", "fechaContrato"]
       };
-          //para  el tipo de pago "En una fecha determinada posterior"
+      //para  el tipo de pago "En una fecha determinada posterior"
     } else if (this.validar == 2) {
       return {
         nombVendedor: {
@@ -961,7 +963,7 @@ export default {
     ...mapMutations({
       addt: "datos/add"
     }),
-    //Calcula cuotas 
+    //Calcula cuotas
     calcularCuota() {
       // Math.round((this.diferencia/this.cantidadPeriodo)*100)/100
       //this.diferencia/this.cantidadPeriodo
@@ -979,7 +981,7 @@ export default {
       }
       return true;
     },
-    // validador para cada campo 
+    // validador para cada campo
     validateSolo(name, vari, sec, mtoast) {
       //consuta los articulos
       if (name == this.$v.sec2.bien && vari.length > 2) {
@@ -1076,7 +1078,7 @@ export default {
         this.diferencia = vari - this.cantidadPagada;
       }
 
-      //validacion de los campos uno por uno 
+      //validacion de los campos uno por uno
       name.$model = vari;
       name.$touch();
       var isValid = name.$invalid;
@@ -1199,12 +1201,11 @@ export default {
           console.log(response);
           if (response.data.success) {
             this.makeToast("primary", response.data.massage);
-            
-            if(this.tipoContrato=="borrador"){
-              window.location.href = '/contratos/borrador'; 
-            }else 
-            if(this.tipoContrato=="iniciado"){
-              window.location.href = '/contratos/iniciado'; 
+
+            if (this.tipoContrato == "borrador") {
+              window.location.href = "/contratos/borrador";
+            } else if (this.tipoContrato == "iniciado") {
+              window.location.href = "/contratos/iniciado";
             }
           } else {
             this.makeToast("danger", response.data.massage);
@@ -1218,7 +1219,7 @@ export default {
       this.$refs["my-modal"].hide();
       this.$refs["allfine"].hide();
     },
-   // Guardar usuario 
+    // Guardar usuario
     guardarUsuario(docid, nombre, tipodoc) {
       console.log(docid);
       console.log(nombre);
@@ -1303,7 +1304,7 @@ export default {
           if (response.data.success) {
             this.makeToast("primary", response.data.massage);
             //this.reload();
-            window.location.href = '/contratos/borrador'; 
+            window.location.href = "/contratos/borrador";
           } else {
             this.makeToast("danger", response.data.massage);
           }
@@ -1312,15 +1313,26 @@ export default {
           console.log(e);
           this.makeToast("danger", " " + e);
         });
-
+     
       this.$refs["my-modal"].hide();
       this.$refs["allfine"].hide();
+    },
+    // Eliminar contrato Borrador
+    eliminarBorrador() {
+      apiService.deleteContrato(this.$store.state.counter.id).then(
+        respuesta=>{
+          console.log(respuesta)
+          this.makeToast("primary", respuesta.massage);
+          this.$refs["my-modal"].hide();
+          this.reload()
+        }
+      )
     },
     // Recarga la pagina
     reload() {
       location.reload();
     },
-    // Imprimir 
+    // Imprimir
     printDiv() {
       console.log("entra imprimir");
       var ventana = window.open("", "PRINT", "height=400,width=600");

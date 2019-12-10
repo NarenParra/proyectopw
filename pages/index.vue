@@ -1,16 +1,18 @@
 <template>
   <div>
     <b-card>
-      <b-button
-        variant="outline-success"
-        class="float-left"
-        @click="$store.commit('cambio',true)"
-      >《 Volver</b-button>
-      <!-- <b-button variant="outline-primary" class="float-right" @click="$store.commit('cambio',true)" >Guardar Borrador</b-button> -->
+      <h1
+        class="text-center"
+      >Componente para la gestión y automatización del seguimiento de los contratos de clientes</h1>
     </b-card>
-  <br>
-      <b-card class="text-center" >
-        <b-row>
+    
+    <b-container fluid  >
+      <b-card class="text-center">
+        <img src="../static/Logo UP.png" alt style="max-width: 10rem;" />
+        <img src="../static/Imagen-Pempo.png" alt style="max-width: 11rem;" />
+        <img src="../static/wintime.jpg" alt style="max-width: 12rem;" />
+        
+        <b-row class="justify-content-md-center mt-4">
           <b-card
             title="Crear contrato"
             tag="article"
@@ -22,7 +24,7 @@
             </b-col>
 
             <b-col md="11">
-              <b-button href="/contratos/base" variant="primary" >Mostrar</b-button>
+              <b-button href="/contratos/base" variant="primary">Mostrar</b-button>
             </b-col>
           </b-card>
 
@@ -72,6 +74,7 @@
           </b-card>
         </b-row>
       </b-card>
+    </b-container>
   </div>
 </template>
 
