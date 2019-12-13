@@ -24,6 +24,10 @@
               <b>SEGUNDA</b> - PRECIO: Las partes han acordado como precio del bien objeto de la compraventa, la suma de <b>{{dineroS}}</b> PESOS M CTE $ (<b>{{dineroN}}</b>) valor que EL COMPRADOR pagará AL VENDEDOR de la siguiente manera: </b>
             </p>
 
+            <p v-if="descripValor=='En totalidad al momento de firmar el contrato'">
+              <b>En totalidad al momento de firmar el contrato</b>
+            </p>
+
             <p v-if="descripValor=='En una fecha determinada posterior'">
               El Comprador se compromete a satisfacer su obligación pecuniaria en un plazo de  <b>{{cantidadPeriodo}}</b> <b>{{unidadPeriodo}}</b>  desde la fecha de firma de este Contrato.
             </p>

@@ -2,7 +2,7 @@
   <div>
     <b-navbar type="dark" variant="info">
       <b-navbar-brand style="font-size:40px" href="/">WinTime</b-navbar-brand>
-      <b-navbar-nav v-if="$store.state.nav">
+      <b-navbar-nav>
         <!-- Navbar dropdowns -->
         <b-nav-item-dropdown text="Contratos de clientes">
           <b-dropdown-item href="/contratos/base">Crear contrato</b-dropdown-item>
@@ -17,8 +17,8 @@
           <template v-slot:button-content>
             <em>User</em>
           </template>
-          <b-dropdown-item @click="$store.commit('nav',true)">Vendedor</b-dropdown-item>
-          <b-dropdown-item @click="$store.commit('nav',false)">Comprador</b-dropdown-item>
+          <b-dropdown-item>Vendedor</b-dropdown-item>
+          <b-dropdown-item>Comprador</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
       {{$store.state.nav}}
@@ -29,14 +29,8 @@
 <script>
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
-  methods: {
-    ver_cliente() {
-      this.vendedor = false;
-    }
-  }
+  methods: {}
 };
 </script>

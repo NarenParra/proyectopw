@@ -162,6 +162,11 @@
                         <br>
                       </li>
                   </p>
+
+                  <p v-if="descripValor=='En totalidad al momento de firmar el contrato'">
+                    <b>En totalidad al momento de firmar el contrato</b>
+                  </p>
+
                   <p>
                     <b>SEGUNDA</b> - PRECIO: Las partes han acordado como precio del bien objeto de la compraventa, la suma de <b>{{dineroS}}</b> PESOS M CTE $ (<b>{{dineroN}}</b>) valor que EL COMPRADOR pagará AL VENDEDOR de la siguiente manera: </b>
                   </p>
@@ -235,6 +240,7 @@
                 </b-col>
                 </b-row>
               </template>
+
               <b-card-text>
                 <div v-if="$v.sec1.$anyError">
                   <b>Seccion 1: identificación de las partes</b>
@@ -242,9 +248,9 @@
                  <a  href="#" @click="$refs.wizard.activateTab(0)">revisar seccion >></a></p>
                 </div>  
                
-                <div v-if="$v.sec2.$anyError" >
+                <div v-if="articulo.length == 0" >
                   <b>Seccion 2: Objeto</b>
-                  <p > tiene {{contSec2}} campos con errores
+                  <p > No hay articulos agreagados al contrato
                   <a  href="#" @click="$refs.wizard.activateTab(1)">revisar seccion >></a></p>
                 </div>    
                 
@@ -255,7 +261,7 @@
                 </div>
 
                 <div v-if="$v.sec5.$anyError" >
-                  <b>Seccion 5: </b>
+                  <b>Seccion 4: </b>
                   <p> tiene {{contSec5}} campos con errores
                   <a  href="#" @click="$refs.wizard.activateTab(3)">revisar seccion >></a></p>
                 </div>
@@ -923,6 +929,7 @@ export default {
           }
           this.tipoContrato = "borrador";
           this.$refs["my-modal-borrador"].show();
+          this.mostrar = true;
         } else {
           console.log("entra update bien todo");
           this.tipoContrato = "iniciado";
@@ -965,8 +972,6 @@ export default {
     }),
     //Calcula cuotas
     calcularCuota() {
-      // Math.round((this.diferencia/this.cantidadPeriodo)*100)/100
-      //this.diferencia/this.cantidadPeriodo
       return Math.round((this.diferencia / this.cantidadPeriodo) * 100) / 100;
     },
     //validador por secciones
@@ -1069,7 +1074,7 @@ export default {
         this.cancelo = false;
       }
 
-      //calcula la diferencia entre el calor del contrato y la cantidad pagada
+      //calcula la diferencia entre el valor del contrato y la cantidad pagada
       if (name == this.$v.cantidadPagada && vari.length > 0) {
         this.diferencia = this.dineroN - vari;
       } else if (name == this.$v.sec3.dineroN && vari.length > 0) {
