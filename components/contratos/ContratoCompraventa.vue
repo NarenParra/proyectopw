@@ -47,9 +47,7 @@
                     <b>PRIMERA</b> <p class="mb-0">- OBJETO: El VENDEDOR, por medio del presente instrumento transfiere a título de compraventa real y efectiva al COMPRADOR el derecho de dominio y la posesión que tiene y ejerce sobre el siguiente bien:</p>
                     
                     <quick-edit id="cantart"  v-model="cantidadArticulo" type="number" placeholder="Eje. 89" emptyText="Escriba la cantidad"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="!cantidadArticulo" class="bien">Escriba la cantidad </span><span v-if="cantidadArticulo" class="bien">{{cantidadArticulo}}</span><b-tooltip v-if="$v.sec1.docVendedor.$error" show target="docV"  variant="danger">{{$v.sec1.docVendedor.err}}</b-tooltip></quick-edit>
-
                     &nbsp
-
                     <quick-edit  id="bien" :validator="(vari)=>validateSolo($v.sec2.bien,vari,$v.sec2,true)"   v-model="bien" placeholder="Eje. nike" emptyText="Agregar bien"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="articulo.length>0 " class="bien">Agregar bien</span><span v-if="articulo.length<1" class="error" > {{"Agregar bien"}} </span><b-tooltip v-if="articulo.length<1"  show target="bien"  variant="danger">{{ "No hay articulos"}}</b-tooltip></quick-edit>
                     <br>
                     <br>
@@ -65,10 +63,9 @@
                       ({{input.cantidad}})&nbsp{{input.articulo}}
                       <b-link @click="deleteRow(index)">❌</b-link>
                      </span>   
-                     <br>
+                    <br>
                     <br>
                   </li>
-                  
                   </b-alert>
                 </b-container>
                 <br>   
@@ -98,8 +95,8 @@
                       <p class="d-inline mb-0"> PESOS M CTE &nbsp</p>
                       <p class="d-inline mb-0">Por lo tanto la cantidad aplazada asciende a  {{NumberAsString(diferencia)}} &nbsp $(<b>{{diferencia}}</b>)  &nbsp<p>
                       <p class="d-inline mb-0">los cuales son pagaderos en &nbsp</p> 
-                       <quick-edit id="cantidadPeriodo" :validator="(vari)=>validateSolo($v.cantidadPeriodo,vari,$v.sec3,true)" v-model="cantidadPeriodo" aria-placeholder="Eje. 500000" type="number" emptyText="Escriba un numero"><b-tooltip v-if="$v.cantidadPeriodo.$error && $v.cantidadPeriodo.$invalid"  show target="cantidadPeriodo"  variant="danger">{{"Escriba un numero"|| "Error en el campo"}}</b-tooltip><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="$v.cantidadPeriodo.$error" class="error" > {{cantidadPeriodo ||"Escriba un numero"}} </span><span v-if="cantidadPeriodo==''&& !$v.cantidadPeriodo.$error " class="bien"> Escriba un numero</span></quick-edit>
-                      &nbsp cuotas &nbsp
+                       <quick-edit id="cantidadPeriodo" :validator="(vari)=>validateSolo($v.cantidadPeriodo,vari,$v.sec3,true)" v-model="cantidadPeriodo" aria-placeholder="Eje. 5" type="number" emptyText="Escriba un numero"><b-tooltip v-if="$v.cantidadPeriodo.$error && $v.cantidadPeriodo.$invalid"  show target="cantidadPeriodo"  variant="danger">{{"Escriba un numero"|| "Error en el campo"}}</b-tooltip><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="$v.cantidadPeriodo.$error" class="error" > {{cantidadPeriodo ||"Escriba un numero"}} </span><span v-if="cantidadPeriodo==''&& !$v.cantidadPeriodo.$error " class="bien"> Escriba un numero</span></quick-edit>
+                      &nbsp cuotas &nbsp 
                       <quick-edit id="unidadperiodo" :validator="(vari)=>validateSolo($v.unidadPeriodo,vari,$v,true)" v-model="unidadPeriodo" type="select" :options="periodo2" emptyText="Periodicidad"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="$v.unidadPeriodo.$error" class="error" > {{unidadPeriodo ||"Periodicidad"}} </span><span v-if="unidadPeriodo==''&& !$v.unidadPeriodo.$error " class="bien"> Periodicidad </span><b-tooltip v-if="$v.unidadPeriodo.$error && $v.unidadPeriodo.$invalid"  show target="unidadperiodo"  variant="danger">{{$v.unidadPeriodo.err || "Error en el campo"}}</b-tooltip></quick-edit>
                       <p class="d-inline mb-0"> siendo el monto de cada cuota de $ ({{calcularCuota()}}) PESOS, desde la fecha de firma de este Contrato.</p>
                     </div> 
@@ -223,7 +220,7 @@
               </client-only>                
             </tab-content >
 <!-- Bloque de alertas -->
-            <div v-if="mostrar">
+            <div v-if="mostrar && $v.$anyError">
               <b-card
                 border-variant="danger"
                 header="Error"
@@ -334,7 +331,7 @@
   <div v-if="this.$store.state.counter.estado== 'Borrador' || this.$store.state.counter.estado== 'Base' " >
     <b-modal ref="usuario"  hide-footer title="Registro de Persona">
       <div>
-        <h3 class="text-center"> La persona no existe. </h3>
+  <h3 class="text-center"> La persona no existe. </h3>
         <h3 class="text-center">Desea Registrarla?</h3>
         <b-form  @submit="onSubmit">
         <b-form-group id="nombre" label="Nombres:" >
@@ -655,7 +652,8 @@ export default {
           "docExpeCompra"
         ],
         sec2: ["bien"],
-        sec3: ["dineroS", "dineroN", "descripValor"],
+        //sec3: ["dineroS", "dineroN", "descripValor"],
+        sec3: ["dineroS", "dineroN", "descripValor","unidadPeriodo","cantidadPeriodo","cantidadPagada"],
         //sec4: ["tradicion"],
         sec5: ["contratoCiudad", "fechaContrato"]
       };
@@ -733,6 +731,7 @@ export default {
           required,
           numeric
         },
+        cantidadPagada: {},
         contratoCiudad: {
           required,
           minLength: minLength(3),
@@ -759,7 +758,8 @@ export default {
           "docExpeCompra"
         ],
         sec2: ["bien"],
-        sec3: ["dineroS", "dineroN", "descripValor"],
+        //sec3: ["dineroS", "dineroN", "descripValor"],
+        sec3: ["dineroS", "dineroN", "descripValor","unidadPeriodo","cantidadPeriodo","cantidadPagada"],
         //sec4: ["tradicion"],
         sec5: ["contratoCiudad", "fechaContrato"]
       };
@@ -869,7 +869,8 @@ export default {
           "docExpeCompra"
         ],
         sec2: ["bien"],
-        sec3: ["dineroS", "dineroN", "descripValor"],
+        //sec3: ["dineroS", "dineroN", "descripValor"],
+        sec3: ["dineroS", "dineroN", "descripValor","unidadPeriodo","cantidadPeriodo","cantidadPagada"],
         //sec4: ["tradicion"],
         sec5: ["contratoCiudad", "fechaContrato"]
       };
@@ -976,6 +977,7 @@ export default {
     },
     //validador por secciones
     validateStep(name) {
+
       for (let index = 0; index < Object.keys(name).length - 8; index++) {
         this.validateSolo(
           this.$v[Object.keys(name)[index]],
@@ -988,6 +990,7 @@ export default {
     },
     // validador para cada campo
     validateSolo(name, vari, sec, mtoast) {
+    
       //consuta los articulos
       if (name == this.$v.sec2.bien && vari.length > 2) {
         console.log(vari);
@@ -1055,9 +1058,8 @@ export default {
         vari == "En totalidad al momento de firmar el contrato"
       ) {
         this.validar = 1;
-        this.cancelo = true;
-        this.cantidadPagada = this.dineroN;
-        this.cantidadPeriodo = null;
+        //this.cantidadPagada = this.dineroN;
+        this.cantidadPeriodo = "";
         this.unidadPeriodo = null;
       } else if (
         name == this.$v.sec3.descripValor &&
@@ -1065,15 +1067,21 @@ export default {
       ) {
         this.validar = 2;
         this.cancelo = false;
-        this.cantidadPagada = 0;
+        if(this.unidadPeriodo == "Mensuales" || this.unidadPeriodo ==  "Anuales"){
+          this.unidadPeriodo=null
+        }
       } else if (
         name == this.$v.sec3.descripValor &&
         vari == "De forma periodica"
       ) {
         this.validar = 3;
         this.cancelo = false;
-      }
-
+        console.log("this.unidadPeriodo")
+        console.log(this.unidadPeriodo)
+        if(this.unidadPeriodo == "Días" || this.unidadPeriodo ==  "Meses" || this.unidadPeriodo ==  "Años"){
+          this.unidadPeriodo=null
+        }
+      }       
       //calcula la diferencia entre el valor del contrato y la cantidad pagada
       if (name == this.$v.cantidadPagada && vari.length > 0) {
         this.diferencia = this.dineroN - vari;
@@ -1113,7 +1121,6 @@ export default {
         case name.numeric == false:
           name.err = "¡Error no es un numero";
           break;
-
         default:
           name.err = "Error, valor minimo";
           break;
@@ -1175,6 +1182,13 @@ export default {
     },
     // guardar contrato
     gurardarContrato() {
+      if(this.descripValor == "En totalidad al momento de firmar el contrato"){
+        this.cantidadPagada = this.dineroN;
+        this.cancelo = true;
+        this.unidadPeriodo = "";
+      }else if(this.descripValor =="En una fecha determinada posterior"){
+        this.cantidadPagada = 0;
+      }
       const axios = require("axios");
       axios
         .post("http://localhost:1337/api/contrato", {
@@ -1226,9 +1240,10 @@ export default {
     },
     // Guardar usuario
     guardarUsuario(docid, nombre, tipodoc) {
-      console.log(docid);
-      console.log(nombre);
-      console.log(tipodoc);
+      if(this.descripValor == "En totalidad al momento de firmar el contrato"){
+        this.cantidadPagada = this.dineroN;
+      }
+
       if (docid && nombre && tipodoc) {
         this.$refs["usuario"].hide();
         const axios = require("axios");
@@ -1266,7 +1281,13 @@ export default {
     },
     //Actualizar contrato
     updateContrato() {
-      console.log();
+      if(this.descripValor == "En totalidad al momento de firmar el contrato"){
+        this.cantidadPagada = this.dineroN;
+        this.unidadPeriodo = "";
+      }else if(this.descripValor =="En una fecha determinada posterior"){
+        this.cantidadPagada = 0;
+      }
+
       if (!this.cantidadPagada) {
         this.cantidadPagada = 0;
       }
@@ -1274,6 +1295,8 @@ export default {
         this.cantidadPeriodo == 0;
       }
       console.log("entra update");
+      console.log("unidadPeriodo");
+      console.log(this.unidadPeriodo);
       const axios = require("axios");
       axios
         .put(
@@ -1307,8 +1330,7 @@ export default {
 
           console.log(response);
           if (response.data.success) {
-            this.makeToast("primary", response.data.massage);
-            //this.reload();
+            this.makeToast("primary", response.data.massage); 
             window.location.href = "/contratos/borrador";
           } else {
             this.makeToast("danger", response.data.massage);
@@ -1318,20 +1340,20 @@ export default {
           console.log(e);
           this.makeToast("danger", " " + e);
         });
-     
+
       this.$refs["my-modal"].hide();
       this.$refs["allfine"].hide();
     },
     // Eliminar contrato Borrador
     eliminarBorrador() {
-      apiService.deleteContrato(this.$store.state.counter.id).then(
-        respuesta=>{
-          console.log(respuesta)
+      apiService
+        .deleteContrato(this.$store.state.counter.id)
+        .then(respuesta => {
+          console.log(respuesta);
           this.makeToast("primary", respuesta.massage);
           this.$refs["my-modal"].hide();
-          this.reload()
-        }
-      )
+          this.reload();
+        });
     },
     // Recarga la pagina
     reload() {
@@ -1362,8 +1384,6 @@ export default {
   },
   //Carga todos los datos del contrato seleccionado
   created() {
-    console.log("this.$store.state.counter.id");
-    console.log(this.$store.state.counter.id);
     if (
       (this.$store.state.counter.id &&
         this.$store.state.counter.estado == "Borrador") ||
@@ -1414,8 +1434,6 @@ export default {
                 .getContratoArticulo(this.$store.state.counter.id)
                 .then(data2 => {
                   //this.bien = data2.data[0].slug;
-                  console.log("data2");
-                  console.log(data2);
                   data2.forEach(articulo => {
                     this.articulo.push({
                       articulo: articulo.articulo.slug,
@@ -1425,12 +1443,17 @@ export default {
                 });
             }
             if (element.titulo == "Precio") {
-              console.log("element");
-              console.log(element);
               this.dineroN = this.$store.state.counter.valor;
               this.descripValor = element.descripcion;
+              if(element.descripcion=="De forma periodica"){
+                this.validar=3;
+              }else if(element.descripcion=="En una fecha determinada posterior"){
+                this.validar=3;
+              }else{
+                this.validar=1;
+              }
               this.dineroS = element.valorDescripcion;
-              if (this.cantidadPeriodo == 0) {
+              if (element.cantidadPeriodo == 0) {
                 this.cantidadPeriodo = "";
               } else {
                 this.cantidadPeriodo = element.cantidadPeriodo;

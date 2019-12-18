@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card>
+    <!-- <b-card>
       <h1
         class="text-center"
       >Componente para la gestión y automatización del seguimiento de los contratos de clientes</h1>
@@ -74,7 +74,7 @@
           </b-card>
         </b-row>
       </b-card>
-    </b-container>
+    </b-container> -->
   </div>
 </template>
 
@@ -115,4 +115,3 @@ export default {
   padding-top: 15px;
 }
 </style>
-

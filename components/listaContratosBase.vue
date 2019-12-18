@@ -25,26 +25,28 @@
         <!-- A custom formatted column -->
 
         <template v-slot:cell(crear)="row">
-          <b-button variant="outline-primary" @click="guaradarID(row.item,row.item.finalidad)">Crear</b-button>
+          <b-button
+            variant="outline-primary"
+            @click="guaradarID(row.item, row.item.finalidad)"
+            >Crear</b-button
+          >
         </template>
       </b-table>
     </b-container>
 
     <div class="container mt-3">
-      <div v-if="fin ==='Compraventa' && !$store.state.mostrar">
+      <div v-if="fin === 'Compraventa' && !$store.state.mostrar">
         <cc />
       </div>
-      <div v-if="fin ==='B'">
+      <div v-if="fin === 'B'">
         <ca />
       </div>
-      <div v-if="fin ==='C'">
+      <div v-if="fin === 'C'">
         <cs />
       </div>
     </div>
   </div>
 </template>
-
-
 
 <script>
 import cc from "~/components/contratos/ContratoCompraventa.vue";
@@ -119,5 +121,4 @@ export default {
   }
 };
 </script>
-<style >
-</style>
+<style></style>

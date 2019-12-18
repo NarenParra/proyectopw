@@ -1,7 +1,7 @@
   <template lang="">
     <div>
       <b-card>
-         <b-button variant="outline-success" class="float-left" @click="$store.commit('cambio',true)" >《 Volver</b-button>
+        <b-button variant="outline-success" class="float-left" @click="$store.commit('cambio',true)" >《 Volver</b-button>
       </b-card>
       <b-card>
          <div class="text-justify" id="imprimir">
@@ -11,14 +11,13 @@
                 Entre los suscritos de una parte  <b>{{nombVendedor}}</b> <span class="d-inline mb-0" v-if="selectedVend !='Nit'"> mayor de edad,</span> <span  class="d-inline mb-0" v-if="selectedVend =='Nit'"> Sociedad comercial,</span> con domicilio en esta ciudad e identificado (a) con  <b>{{selectedVend}}</b> número <b>{{docVendedor}}</b> <span v-if="selectedVend !='Nit'"> expedida en </span> <b>{{docExpeVende}}</b> quien para efectos de este contrato se denomina VENDEDOR, y de la otra parte: <b> {{nombComprador}}</b> <span class="d-inline mb-0" v-if="selectedComp !='Nit'"> mayor de edad,</span> <span  class="d-inline mb-0" v-if="selectedComp =='Nit'"> Sociedad comercial,</span>  con domicilio en esta ciudad e identificado (a) con <b>{{selectedComp}}</b> número <b>{{docComprador}}</b> <span v-if="selectedComp !='Nit'"> expedida en </span>  <b>{{docExpeCompra}}</b> quien en adelante se denominará simplemente como COMPRADOR, hacemos constar que de mutuo acuerdo hemos convenido en celebrar un contrato de COMPRAVENTA que se regirá por las normas aplicables a la materia y especialmente por las siguientes cláusulas: 
             </p>
             <p>
-                <b>PRIMERA</b> - OBJETO: El VENDEDOR, por medio del presente instrumento transfiere a título de compraventa real y efectiva al COMPRADOR el derecho de dominio y la posesión que tiene y ejerce sobre el siguiente bien:
-                    
-                <li v-for="(input, index) in articulo">
-                  <b>
-                  ({{input.cantidad}})&nbsp{{input.articulo}}
-                  </b>
-                  <br>
-                </li>
+              <b>PRIMERA</b> - OBJETO: El VENDEDOR, por medio del presente instrumento transfiere a título de compraventa real y efectiva al COMPRADOR el derecho de dominio y la posesión que tiene y ejerce sobre el siguiente bien:    
+              <li v-for="(input, index) in articulo">
+                <br>
+                <b>
+                ({{input.cantidad}})&nbsp{{input.articulo}}
+                </b>
+              </li>
             </p>
             <p>
               <b>SEGUNDA</b> - PRECIO: Las partes han acordado como precio del bien objeto de la compraventa, la suma de <b>{{dineroS}}</b> PESOS M CTE $ (<b>{{dineroN}}</b>) valor que EL COMPRADOR pagará AL VENDEDOR de la siguiente manera: </b>
@@ -253,7 +252,7 @@ export default {
       (this.$store.state.counter.id &&
         this.$store.state.counter.estado == "Borrador") ||
       (this.$store.state.counter.id &&
-        this.$store.state.counter.estado == "Iniciado")||
+        this.$store.state.counter.estado == "Iniciado") ||
       (this.$store.state.counter.id &&
         this.$store.state.counter.estado == "Finalizado")
     ) {
