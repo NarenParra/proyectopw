@@ -884,7 +884,7 @@ export default {
           this.nombVendedor +
           " y " +
           this.nombComprador +
-          " con objeo de compra " +
+          " con objeto de compra " +
           this.articulo[0].articulo +
           "...";
       } else {
@@ -894,7 +894,7 @@ export default {
           this.nombVendedor +
           " y " +
           this.nombComprador +
-          " con objeo de compra " +
+          " con objeto de compra " +
           "...";
       }
 
