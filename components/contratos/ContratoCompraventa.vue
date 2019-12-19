@@ -2,7 +2,7 @@
     <div>
       <b-card>
          <b-button variant="outline-success" class="float-left" @click="$store.commit('cambio',true)" >《 Volver</b-button>
-        <!-- <b-button v-if="$store.state.counter.estado == 'Base'" variant="outline-success" class="float-right" @click="onComplete" >Guardar Borrador</b-button> -->
+        <b-button v-if="$store.state.counter.estado == 'Borrador'"  variant="outline-success" class="float-right" @click="onComplete" > Iniciar contrato</b-button> 
         <b-button v-if="$store.state.counter.estado == 'Borrador'" variant="outline-danger" class="float-right" @click="$refs['eliminar-borrador'].show()" >Eliminar Borrador</b-button>
       </b-card>
       <br>
@@ -17,22 +17,22 @@
             @on-complete="onComplete"
             shape="circle"
             color="#0390C3">
-            <tab-content ref="primer" :before-change="()=>validateStep($v.sec1)"   title="Personal details" >
+            <tab-content ref="primer" :before-change="()=>validateStep($v.sec1)"   title="Identificación de las partes" >
                 <b-container class="">
                   <client-only>
                   <div class="text-justify form-inline ">
-                   <p class="d-inline mb-0">Entre los suscritos de una parte </p> &nbsp <quick-edit style="" id="butto2"  :validator="(vari)=>validateSolo($v.sec1.nombVendedor,vari,$v.sec1,true)"  v-model="nombVendedor"  placeholder="Nombre del Vendedor" emptyText=" Nombre del Vendedor " ><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="nombVendedor==''&& !$v.sec1.nombVendedor.$error " class="bien">Nombre del Vendedor </span><span v-if="$v.sec1.nombVendedor.$error" class="error mb-0" >  "Nombre del Vendedor" </span><b-tooltip v-if="$v.sec1.nombVendedor.$error" show target="butto2"  variant="danger">{{$v.sec1.nombVendedor.err }}</b-tooltip></quick-edit> &nbsp
+                   <p class="d-inline mb-0">Entre los suscritos de una parte </p> &nbsp <quick-edit :disabled="docVendedor!=''" style="" id="butto2"  :validator="(vari)=>validateSolo($v.sec1.nombVendedor,vari,$v.sec1,true)"  v-model="nombVendedor"  placeholder="Nombre del Vendedor" emptyText=" Nombre del Vendedor " ><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="nombVendedor==''&& !$v.sec1.nombVendedor.$error " class="bien">Nombre del Vendedor </span><span v-if="$v.sec1.nombVendedor.$error" class="error mb-0" >  "Nombre del Vendedor" </span><b-tooltip v-if="$v.sec1.nombVendedor.$error" show target="butto2"  variant="danger">{{$v.sec1.nombVendedor.err }}</b-tooltip></quick-edit> &nbsp
                    <p class="d-inline mb-0" v-if="selectedVend !='Nit'"> mayor de edad, con domicilio en esta ciudad e identificado (a) con  &nbsp</p> 
                    <p class="d-inline mb-0" v-if="selectedVend =='Nit'"> Sociedad comercial, con domicilio en esta ciudad e identificado (a) con  &nbsp</p> 
-                   <quick-edit id="selecV" :validator="(vari)=>validateSolo($v.sec1.selectedVend,vari,$v.sec1,true)"v-model="selectedVend" type="select" :options="options" emptyText="Tipo de documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="selectedVend==''&& !$v.sec1.selectedVend.$error " class="bien">Tipo de documento </span><span v-if="$v.sec1.selectedVend.$error" class="error" > {{ selectedVend ||"Tipo de documento"}} </span><b-tooltip v-if="$v.sec1.selectedVend.$error" show target="selecV"  variant="danger">{{$v.sec1.selectedVend.err}}</b-tooltip></quick-edit>  &nbsp 
+                   <quick-edit :disabled="docVendedor!=''" id="selecV" :validator="(vari)=>validateSolo($v.sec1.selectedVend,vari,$v.sec1,true)"v-model="selectedVend" type="select" :options="options" emptyText="Tipo de documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="selectedVend==''&& !$v.sec1.selectedVend.$error " class="bien">Tipo de documento </span><span v-if="$v.sec1.selectedVend.$error" class="error" > {{ selectedVend ||"Tipo de documento"}} </span><b-tooltip v-if="$v.sec1.selectedVend.$error" show target="selecV"  variant="danger">{{$v.sec1.selectedVend.err}}</b-tooltip></quick-edit>  &nbsp 
                    <p  class="d-inline mb-0"> número </p> &nbsp  <quick-edit id="docV" :validator="(vari)=>validateSolo($v.sec1.docVendedor,vari,$v.sec1,true)"  v-model="docVendedor" type="number" placeholder="Eje. 1234567899" emptyText="Número de documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docVendedor==''&& !$v.sec1.docVendedor.$error " class="bien">Número de documento </span><span v-if="$v.sec1.docVendedor.$error" class="error" > {{docVendedor||"Número de documento"}} </span><b-tooltip v-if="$v.sec1.docVendedor.$error" show target="docV"  variant="danger">{{$v.sec1.docVendedor.err}}</b-tooltip></quick-edit>   &nbsp  
-                   <p class="d-inline mb-0" v-if="selectedVend !='Nit'">expedida en</p> &nbsp <quick-edit v-if="selectedVend !='Nit'" id="docEV" :validator="(vari)=>validateSolo($v.sec1.docExpeVende,vari,$v.sec1,true)" v-model="docExpeVende" placeholder="Lugar de expedición del documento" emptyText="Lugar de expedición del documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docExpeVende==''&& !$v.sec1.docExpeVende.$error " class="bien">Lugar de expedición del documento</span><span v-if="$v.sec1.docExpeVende.$error" class="error" > {{docExpeVende||"Lugar de expedición del documento"}} </span><b-tooltip v-if="$v.sec1.docExpeVende.$error  " show target="docEV"  variant="danger">{{$v.sec1.docExpeVende.err || "Error en el campo"}}</b-tooltip></quick-edit>  
-                   <p class="d-inline mb-0">quien para efectos de este contrato se denomina VENDEDOR, y de la otra parte:</p>  &nbsp <quick-edit id="nomC" :validator="(vari)=>validateSolo($v.sec1.nombComprador,vari,$v.sec1,true)"  v-model="nombComprador" placeholder="Nombre del comprador" emptyText="Nombre del comprador"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="nombComprador==''&& !$v.sec1.nombComprador.$error " class="bien">Nombre del comprador </span><p v-if="$v.sec1.nombComprador.$error"  class="error mb-0"> {{nombComprador||"Nombre del comprador"}} </p><b-tooltip v-if="$v.sec1.nombComprador.$error" show target="nomC"  variant="danger"> {{$v.sec1.nombComprador.err}} </b-tooltip></quick-edit>
+                   <p class="d-inline mb-0" v-if="selectedVend !='Nit'">expedida en</p> &nbsp <quick-edit :disabled="docVendedor!=''" v-if="selectedVend !='Nit'" id="docEV" :validator="(vari)=>validateSolo($v.sec1.docExpeVende,vari,$v.sec1,true)" v-model="docExpeVende" placeholder="Lugar de expedición del documento" emptyText="Lugar de expedición del documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docExpeVende==''&& !$v.sec1.docExpeVende.$error " class="bien">Lugar de expedición del documento</span><span v-if="$v.sec1.docExpeVende.$error" class="error" > {{docExpeVende||"Lugar de expedición del documento"}} </span><b-tooltip v-if="$v.sec1.docExpeVende.$error  " show target="docEV"  variant="danger">{{$v.sec1.docExpeVende.err || "Error en el campo"}}</b-tooltip></quick-edit>  
+                   <p class="d-inline mb-0">quien para efectos de este contrato se denomina VENDEDOR, y de la otra parte:</p>  &nbsp <quick-edit :disabled="docComprador!=''" id="nomC" :validator="(vari)=>validateSolo($v.sec1.nombComprador,vari,$v.sec1,true)"  v-model="nombComprador" placeholder="Nombre del comprador" emptyText="Nombre del comprador"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="nombComprador==''&& !$v.sec1.nombComprador.$error " class="bien">Nombre del comprador </span><p v-if="$v.sec1.nombComprador.$error"  class="error mb-0"> {{nombComprador||"Nombre del comprador"}} </p><b-tooltip v-if="$v.sec1.nombComprador.$error" show target="nomC"  variant="danger"> {{$v.sec1.nombComprador.err}} </b-tooltip></quick-edit>
                    <p class="d-inline mb-0" v-if="selectedComp !='Nit'">mayor de edad, con domicilio en esta ciudad e identificado (a) con &nbsp</p> 
                    <p class="d-inline mb-0" v-if="selectedComp =='Nit'">Sociedad comercial, con domicilio en esta ciudad e identificado (a) con &nbsp</p> 
-                    <quick-edit id="selC"  :validator="(vari)=>validateSolo($v.sec1.selectedComp,vari,$v.sec1,true)" v-model="selectedComp" type="select" :options="options"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="selectedComp==''&& !$v.sec1.selectedComp.$error " class="bien">Tipo de documento </span><span v-if="$v.sec1.selectedComp.$error" class="error" > {{selectedComp||"Tipo de documento"}} </span><b-tooltip v-if="$v.sec1.selectedComp.$error" show target="selC"  variant="danger">{{$v.sec1.selectedComp.err}}</b-tooltip></quick-edit>
+                    <quick-edit :disabled="docComprador!=''" id="selC"  :validator="(vari)=>validateSolo($v.sec1.selectedComp,vari,$v.sec1,true)" v-model="selectedComp" type="select" :options="options"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="selectedComp==''&& !$v.sec1.selectedComp.$error " class="bien">Tipo de documento </span><span v-if="$v.sec1.selectedComp.$error" class="error" > {{selectedComp||"Tipo de documento"}} </span><b-tooltip v-if="$v.sec1.selectedComp.$error" show target="selC"  variant="danger">{{$v.sec1.selectedComp.err}}</b-tooltip></quick-edit>
                    <p class="d-inline mb-0">número</p> &nbsp <quick-edit id="docC" :validator="(vari)=>validateSolo($v.sec1.docComprador,vari,$v.sec1,true)"  v-model="docComprador" type="number" placeholder="Eje. 1234567899" emptyText="Número de documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docComprador==''&& !$v.sec1.docComprador.$error " class="bien">Número de documento </span><span v-if="$v.sec1.docComprador.$error" class="error" > {{docComprador||"numero de documento"}} </span><b-tooltip v-if="$v.sec1.docComprador.$error" show target="docC"  variant="danger">{{$v.sec1.docComprador.err}}</b-tooltip></quick-edit>  &nbsp 
-                   <p class="d-inline mb-0" v-if="selectedComp !='Nit'" >expedida en</p> &nbsp <quick-edit v-if="selectedComp !='Nit'"  id="docEC" :validator="(vari)=>validateSolo($v.sec1.docExpeCompra,vari,$v.sec1,true)" v-model="docExpeCompra" placeholder="Lugar de expedición del documento" emptyText="Lugar de expedición del documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docExpeCompra==''&& !$v.sec1.docExpeCompra.$error " class="bien">Lugar de expedición del documento</span><span v-if="$v.sec1.docExpeCompra.$error" class="error" >{{docExpeCompra||"Lugar de expedición del documento"}} </span><b-tooltip v-if="$v.sec1.docExpeCompra.$error" show target="docEC"  variant="danger">{{$v.sec1.docExpeCompra.err || "Error en el campo"}}</b-tooltip></quick-edit> 
+                   <p class="d-inline mb-0" v-if="selectedComp !='Nit'" >expedida en</p> &nbsp <quick-edit :disabled="docComprador!=''" v-if="selectedComp !='Nit'"  id="docEC" :validator="(vari)=>validateSolo($v.sec1.docExpeCompra,vari,$v.sec1,true)" v-model="docExpeCompra" placeholder="Lugar de expedición del documento" emptyText="Lugar de expedición del documento"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="docExpeCompra==''&& !$v.sec1.docExpeCompra.$error " class="bien">Lugar de expedición del documento</span><span v-if="$v.sec1.docExpeCompra.$error" class="error" >{{docExpeCompra||"Lugar de expedición del documento"}} </span><b-tooltip v-if="$v.sec1.docExpeCompra.$error" show target="docEC"  variant="danger">{{$v.sec1.docExpeCompra.err || "Error en el campo"}}</b-tooltip></quick-edit> 
                    <p class="d-inline mb-0">quien en adelante se denominará simplemente como COMPRADOR, hacemos constar que de mutuo acuerdo hemos convenido en celebrar un contrato de COMPRAVENTA que se regirá por las normas aplicables a la materia y especialmente por las siguientes cláusulas:</p> 
                   </div>
                   <br>                
@@ -40,7 +40,7 @@
                 </b-container>
               <br />
             </tab-content>
-            <tab-content :before-change="()=>validateStep($v.sec2)"  title="Contenido"  >
+            <tab-content :before-change="()=>validateStep($v.sec2)"  title="Objeto"  >
                <client-only>
                 <b-container >
                   <div class="text-justify form-inline ">
@@ -72,7 +72,7 @@
                  </client-only>
               <br />
             </tab-content>
-            <tab-content :before-change="()=>validateStep($v.sec3)">
+            <tab-content :before-change="()=>validateStep($v.sec3)" title="Precio">
                <client-only>
               <div class="form-inline ">
                     <b>SEGUNDA</b></p> <p class="d-inline mb-0">- PRECIO: Las partes han acordado como precio del bien objeto de la compraventa, la suma de</p> &nbsp <b>{{dineroS= NumberAsString(dineroN)}}</b> &nbsp M CTE $ (
@@ -105,31 +105,9 @@
               <br>
             </client-only>
             </tab-content>
-            <!-- <tab-content :before-change="()=>validateStep($v.sec4)">
-               <client-only>
-              <div class="form-inline text-justify">
-                    <b>TERCERA</b> - TRADICIÓN: EL VENDEDOR garantiza a EL COMPRADOR que los bienes objeto de la venta son de su propiedad, que no han sido enajenado a
-                    ninguna otra persona, que tiene la posesión tranquila de los mismos y declara
-                    haberlo adquirió por compra efectuada a
-                    <quick-edit :validator="(vari)=>validateSolo($v.sec4.tradicion,vari,$v.sec4,true)" v-model="tradicion" emptyText="Campo Tradicion" placeholder><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="$v.sec4.tradicion.$error" class="error" > {{tradicion ||"Campo Tradicion"}} </span></quick-edit>. En cualquier caso, se
-                    compromete a sanear cualquier vicio que afecte la propiedad o libre disposición
-                    de los biopenenes.
-              </div>
-              <br>   
-              </client-only>
-            </tab-content> -->
-            <tab-content  :before-change="()=>validateStep($v.sec5)" title="Seccion 2">
+            <tab-content  :before-change="()=>validateStep($v.sec5)" title="Aceptación">
                <client-only>
                 <b-container>
-                  <!-- <div>
-                    <b>QUINTA.</b>
-                    <p class="text-justify">
-                      ENTREGA: EL VENDEDOR con la fecha de la firma de este
-                      instrumento hace entrega real y material de los bienes a EL COMPRADOR, y
-                      este declara haberlos recibido a satisfacción, en las condiciones y estado en
-                      que fueron comprados.
-                    </p>
-                  </div> -->
                   <br />
                   <div class="form-inline text-justify">
                     <b>QUINTA.</b> <p class="d-inline mb-0">ACEPTACIÓN: En constancia de aceptación se suscribe, una vez leído, en dos copias del mismo tenor y contenido con destino a cada una de las partes, en la ciudad de</p> <quick-edit id="lugarC" :validator="(vari)=>validateSolo($v.sec5.contratoCiudad,vari,$v.sec5,true)"  v-model="contratoCiudad" placeholder emptyText="Lugar de celebración del contrato"><span slot="button-ok">✔</span><span slot="button-cancel">❌</span><span v-if="$v.sec5.contratoCiudad.$error" class="error" > {{contratoCiudad ||"Lugar de celebración del contrato"}} </span><span v-if="contratoCiudad==''&& !$v.sec5.contratoCiudad.$error " class="bien"> Lugar de celebración del contrato </span><b-tooltip v-if="$v.sec5.contratoCiudad.$error && $v.sec5.contratoCiudad.$invalid"  show target="lugarC"  variant="danger">{{$v.sec5.contratoCiudad.err || "Error en el campo"}}</b-tooltip></quick-edit>, <p class="d-inline mb-0">hoy (</p>
@@ -178,14 +156,6 @@
                   <p v-if="descripValor=='De forma periodica'">
                     En caso de que el Comprador demore el pago de dos plazos o en el último de estos, el Vendedor podrá optar entre exigir el pago de todos los plazos pendientes de abono o resolver el contrato. En el primer caso, la cantidad debida por el Comprador tendrá la consideración de deuda vencida, liquidada y exigible. En el segundo caso, las Partes deberán restituirse recíprocamente las prestaciones objeto de este contrato.    
                   </p>
-                  <!-- <p>
-                    <b>TERCERA</b> - TRADICIÓN: EL VENDEDOR garantiza a EL COMPRADOR que los bienes objeto de la venta son de su propiedad, que no han sido enajenado a
-                    ninguna otra persona, que tiene la posesión tranquila de los mismos y declara
-                    haberlo adquirió por compra efectuada a
-                    <b>{{tradicion}}</b>. En cualquier caso, se
-                    compromete a sanear cualquier vicio que afecte la propiedad o libre disposición
-                    de los biopenenes.
-                  </p> -->
                   <p>
                     <b>TERCERA.</b> - OTRAS OBLIGACIONES: EL VENDEDOR hace entrega del bien objeto. Es
                     entendido que será a cargo de EL COMPRADOR cualquier suma que se cause o liquide a partir de esta fecha con relación al citado bien.
@@ -313,8 +283,9 @@
       <div class="d-block text-center">
         <h3> Está seguro de que desea registrado como contrato iniciado ?</h3>
       </div>
+      <b-button class="mt-2" variant="outline-success" block @click="gurardarContrato">Registrar como Iniciado</b-button>
+      <b-button class="mt-2" variant="outline-secondary" block @click="updateContrato">Actualizar Borrador</b-button>
       <b-button class="mt-3" variant="outline-danger" block @click="$refs['allfine-borrador'].hide()">Cancelar</b-button>
-      <b-button class="mt-2" variant="outline-success" block @click="updateContrato">Registrar</b-button>
     </b-modal>
   </div>
 <!-- Eliminar contrato borrador -->
@@ -725,11 +696,12 @@ export default {
         //   minLength: minLength(3)
         // },
         unidadPeriodo: {
-          required
+          required,
         },
         cantidadPeriodo: {
           required,
-          numeric
+          numeric,
+          minValue: minValue(1)
         },
         cantidadPagada: {},
         contratoCiudad: {
@@ -835,7 +807,8 @@ export default {
         },
         cantidadPeriodo: {
           required,
-          numeric
+          numeric,
+          minValue: minValue(1)
         },
 
         cantidadPagada: {
@@ -895,8 +868,15 @@ export default {
         solid: true
       });
     },
+
     //cuando completa el fomulario (boton finalizar ultimo step)
     onComplete: function() {
+      //toca las secciones para saber si tienen errores 
+      this.$v.sec1.$touch();
+      this.$v.sec2.$touch();
+      this.$v.sec3.$touch();
+      this.$v.sec5.$touch();
+      //
       if (this.articulo.length > 0) {
         this.finalidad = "Compraventa";
         this.observaciones =
@@ -933,7 +913,7 @@ export default {
           this.mostrar = true;
         } else {
           console.log("entra update bien todo");
-          this.tipoContrato = "iniciado";
+          this.tipoContrato = "borrador";
           this.$refs["allfine-borrador"].show();
         }
       } else {
@@ -1189,6 +1169,9 @@ export default {
       }else if(this.descripValor =="En una fecha determinada posterior"){
         this.cantidadPagada = 0;
       }
+      if(!this.$v.$anyError){
+        this.tipoContrato="Iniciado"; 
+      }
       const axios = require("axios");
       axios
         .post("http://localhost:1337/api/contrato", {
@@ -1224,6 +1207,8 @@ export default {
             if (this.tipoContrato == "borrador") {
               window.location.href = "/contratos/borrador";
             } else if (this.tipoContrato == "iniciado") {
+              window.location.href = "/contratos/iniciado";
+            }else{
               window.location.href = "/contratos/iniciado";
             }
           } else {
@@ -1294,9 +1279,6 @@ export default {
       if (!this.cantidadPeriodo) {
         this.cantidadPeriodo == 0;
       }
-      console.log("entra update");
-      console.log("unidadPeriodo");
-      console.log(this.unidadPeriodo);
       const axios = require("axios");
       axios
         .put(
@@ -1398,7 +1380,7 @@ export default {
       } else {
         this.cantidadPagada = this.$store.state.counter.pagado;
       }
-      // moment(this.$store.state.counter.fechainicia).format("YYYY-MM-DD");
+
       // busca y llena campos de usuario y rol
       apiService.getContratoUsuario(this.$store.state.counter.id).then(data => {
         data.data.forEach(element => {
@@ -1448,7 +1430,7 @@ export default {
               if(element.descripcion=="De forma periodica"){
                 this.validar=3;
               }else if(element.descripcion=="En una fecha determinada posterior"){
-                this.validar=3;
+                this.validar=2;
               }else{
                 this.validar=1;
               }

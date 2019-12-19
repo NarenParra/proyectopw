@@ -38,12 +38,6 @@
       <div v-if="fin ==='Compraventa' && !$store.state.mostrar">
         <cc />
       </div>
-      <div v-if="fin ==='B'">
-        <ca />
-      </div>
-      <div v-if="fin ==='C'">
-        <cs />
-      </div>
     </div>
   </div>
 </template>

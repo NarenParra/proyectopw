@@ -36,12 +36,6 @@
       <div v-if="fin ==='Compraventa' && !$store.state.mostrar">
         <cc />
       </div>
-      <div v-if="fin ==='B'">
-        <ca />
-      </div>
-      <div v-if="fin ==='C'">
-        <cs />
-      </div>
     </div>
   </div>
 </template>
@@ -61,12 +55,6 @@ export default {
       isBusy: true,
       mostrar: true,
       contratos: {},
-      // selected: null,
-      // opc: [
-      //   { value: "A", text: "Contrato de Compreventa" },
-      //   { value: "B", text: "Contrato de Arrendamiento" },
-      //   { value: "C", text: "contrato por Prestacion de Servicios" }
-      // ],
       fields: [
         // A virtual column that doesn't exist in items
         "index",
